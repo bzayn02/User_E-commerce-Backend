@@ -1,0 +1,5 @@
+##### User CMS API
+
+
+### Root api
+GET http://localhost:8000/

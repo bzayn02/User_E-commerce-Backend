@@ -1,12 +1,17 @@
 import express from 'express'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const app = express()
 
 import helmet from 'helmet'
 const PORT = process.env.PORT || 8000
 
-//middlewares
+//Connect MongoDB
+import mongoClient from './config/db.js'
+mongoClient()
 
+//middlewares
 app.use(helmet())
 
 app.use("/", (req, res) => {
