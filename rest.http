@@ -11,7 +11,7 @@ Content-Type: application/json
 {
     "fname":"Bijay",
     "lname":"Nagarkoti",
-    "email":"c@a.com",
+    "email":"f@a.com",
     "password":"12345678",
     "phone":"0433030330",
     "address":"Sydney, NSW",
