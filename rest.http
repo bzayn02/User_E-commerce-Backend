@@ -11,13 +11,11 @@ Content-Type: application/json
 {
     "fname":"Bijay",
     "lname":"Nagarkoti",
-    "email":"f@a.com",
+    "email":"bfd@a.com",
     "password":"12345678",
     "phone":"0433030330",
     "address":"Sydney, NSW",
     "gender":"Male"
 }
-
-//server side validation
 //send email confirmation and validate email
 //account has been created

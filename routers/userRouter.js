@@ -5,10 +5,11 @@ const Router = express.Router();
 import { createUser } from '../models/user-model/User.model.js';
 import { createUserValidation } from '../middlewares/formValidation.middleware.js';
 import { hashPassword } from '../helpers/bcrypt.helper.js';
+import { createUniqueEmailConfirmation } from '../models/session/Session.model.js';
+import { emailProcessor } from '../helpers/email.helper.js';
 
 Router.all('/', (req, res, next) => {
     console.log(req.body);
-    console.log('From user router');
     next();
 });
 
@@ -19,12 +20,22 @@ Router.post('/', createUserValidation, async (req, res) => {
         const hashPass = hashPassword(req.body.password);
         if (hashPass) {
             req.body.password = hashPass;
-            console.log(hashPass);
 
-            const result = await createUser(req.body);
-            if (result?._id) {
-                //Todo
-                //create unique activation link and email the link to the user email
+            const { _id, fname, email } = await createUser(req.body);
+            if (_id) {
+                // create unique activation link
+                const { pin } = await createUniqueEmailConfirmation(email);
+
+                const forSendingEmail = {
+                    fname,
+                    email,
+                    pin,
+                };
+                if (pin) {
+                    // email the link to the user email
+                    emailProcessor(forSendingEmail);
+                }
+
                 return res.json({
                     state: 'success',
                     message:
