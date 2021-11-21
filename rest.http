@@ -11,11 +11,21 @@ Content-Type: application/json
 {
     "fname":"Bijay",
     "lname":"Nagarkoti",
-    "email":"bfd@a.com",
+    "email":"b@ab.com",
     "password":"12345678",
     "phone":"0433030330",
     "address":"Sydney, NSW",
     "gender":"Male"
 }
-//send email confirmation and validate email
-//account has been created
+
+
+##### Email APIs
+
+### Verify Admin Email
+PATCH http://localhost:8000/api/v1/user/email-verification
+Content-Type: application/json
+
+{
+    "pin":"495308",
+    "email":"b@ab.com"
+}
