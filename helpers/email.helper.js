@@ -64,7 +64,7 @@ export const sendEmailVerificationConfirmation = (emailObj) => {
 
     const obj = {
         ...emailObj,
-        subject: 'Email Confirmation Required.',
+        subject: 'Email Verification Successful!',
         text: `Hi ${fname}, Your email has been verified, you may login now!
                 `,
         html: `
