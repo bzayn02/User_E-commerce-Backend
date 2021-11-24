@@ -93,7 +93,7 @@ Router.patch(
                         email: data.email,
                     });
                     return res.json({
-                        status: 'Success',
+                        status: 'success',
                         message:
                             'Your email has been verified, you may login in now.',
                     });
