@@ -47,14 +47,14 @@ Router.post('/', createUserValidation, async (req, res) => {
                 }
 
                 return res.json({
-                    state: 'success',
+                    status: 'success',
                     message:
                         'New user has been created successfully! We have sent an email confirmation link to your email, please check and follow the instruction to activate your account.',
                 });
             }
         }
         res.json({
-            state: 'error',
+            status: 'error',
             message: 'Unable to  create new user',
         });
     } catch (error) {
@@ -64,7 +64,7 @@ Router.post('/', createUserValidation, async (req, res) => {
             msg = 'This email has been already used by another user.';
         }
         res.json({
-            state: 'error',
+            status: 'error',
             message: msg,
         });
     }

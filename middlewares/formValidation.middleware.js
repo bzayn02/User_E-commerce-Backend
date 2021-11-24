@@ -12,10 +12,10 @@ export const createUserValidation = (req, res, next) => {
         lname: shortStr,
         email,
         password: Joi.string().min(8).required(),
-        phone: Joi.string().max(15),
+        phone: Joi.string().max(15).allow(null).allow(''),
         address: Joi.string().max(100),
-        dob: Joi.date(),
-        gender: Joi.string().max(6),
+        dob: Joi.date().allow(null).allow(''),
+        gender: Joi.string().max(6).allow(''),
     });
 
     const value = schema.validate(req.body);

@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
 
 const app = express();
@@ -14,6 +15,7 @@ mongoClient();
 
 //middlewares
 app.use(helmet());
+app.use(cors());
 app.use(morgan('tiny'));
 app.use(express.urlencoded());
 app.use(express.json());
