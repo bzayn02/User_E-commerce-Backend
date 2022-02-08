@@ -2,12 +2,17 @@ import express from 'express';
 
 const Router = express.Router();
 
-import { createUser, verifyEmail } from '../models/user-model/User.model.js';
+import {
+    createUser,
+    verifyEmail,
+    getUserByEmail,
+} from '../models/user-model/User.model.js';
 import {
     createUserValidation,
     userEmailVerificationValidation,
+    loginUserFormValidation,
 } from '../middlewares/formValidation.middleware.js';
-import { hashPassword } from '../helpers/bcrypt.helper.js';
+import { hashPassword, comparePassword } from '../helpers/bcrypt.helper.js';
 import {
     createUniqueEmailConfirmation,
     findUserEmailVerification,
@@ -116,11 +121,25 @@ Router.patch(
 );
 
 // user login
-Router.post('/', (req, res) => {
+Router.post('/login', loginUserFormValidation, async (req, res) => {
     try {
-        res.json({
-            status: 'success',
-            message: 'login success',
+        const { email, password } = req.body;
+        const user = await getUserByEmail(email);
+        if (user?._id) {
+            // check if password is valid or not
+
+            const isPassMatched = comparePassword(password, user.password);
+            if (isPassMatched) {
+                return res.json({
+                    status: 'success',
+                    message: 'login success',
+                });
+            }
+        }
+
+        res.status(401).json({
+            status: 'error',
+            message: 'Unauthorized',
         });
     } catch (error) {
         res.status(500).json({

@@ -19,8 +19,6 @@ Content-Type: application/json
 }
 
 
-##### Email APIs
-
 ### Verify Admin Email
 PATCH http://localhost:8000/api/v1/user/email-verification
 Content-Type: application/json
@@ -29,3 +27,14 @@ Content-Type: application/json
     "pin":"495308",
     "email":"b@ab.com"
 }
+### Login User
+POST http://localhost:8000/api/v1/user/login
+Content-Type: application/json
+
+{
+    "email":"ap@gmail.com",
+    "password":"asdfjkl;"
+}
+
+
+###
