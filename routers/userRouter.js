@@ -114,4 +114,20 @@ Router.patch(
         }
     }
 );
+
+// user login
+Router.post('/', (req, res) => {
+    try {
+        res.json({
+            status: 'success',
+            message: 'login success',
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Error, unable to login now. Please try again later.',
+        });
+    }
+});
+
 export default Router;
