@@ -17,11 +17,13 @@ import {
     createUniqueEmailConfirmation,
     findUserEmailVerification,
     deleteInfo,
-} from '../models/session/Session.model.js';
+} from '../models/reset-pin/Pin.model.js';
 import {
     sendEmailVerificationConfirmation,
     sendEmailVerificationLink,
 } from '../helpers/email.helper.js';
+
+import { getJWTs } from '../helpers/jwt.helper.js';
 
 Router.all('/', (req, res, next) => {
     console.log(req.body);
@@ -89,7 +91,7 @@ Router.patch(
                 console.log(data, 'from verify email');
 
                 if (data?._id) {
-                    //Delete the session info
+                    //Delete the reset-pin info
                     deleteInfo(req.body);
 
                     //sendEmail confirmation to user
@@ -130,9 +132,14 @@ Router.post('/login', loginUserFormValidation, async (req, res) => {
 
             const isPassMatched = comparePassword(password, user.password);
             if (isPassMatched) {
+                // get JWTs then send to the client
+                const jwts = await getJWTs({ email: user.email });
+                console.log(jwts);
+
                 return res.json({
                     status: 'success',
                     message: 'login success',
+                    jwts,
                 });
             }
         }
