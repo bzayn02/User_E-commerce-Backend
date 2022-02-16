@@ -28,7 +28,7 @@ Content-Type: application/json
     "email":"b@ab.com"
 }
 ### Login User
-POST http://localhost:8000/api/v1/user/login
+POST http://localhost:8000/api/v1/login
 Content-Type: application/json
 
 {
@@ -37,4 +37,10 @@ Content-Type: application/json
 }
 
 
-###
+############################## Token Router ###############
+
+### get new access token
+
+GET http://localhost:8000/api/v1/user/token
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFwQGdtYWlsLmNvbSIsImlhdCI6MTY0NDk3NzY0NCwiZXhwIjoxNjQ3NTY5NjQ0fQ.STolgmiOIOTWBhGmjaaO_RUAhR7ixZVE1Mcm3V5nnZY
+

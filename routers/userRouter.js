@@ -137,12 +137,13 @@ Router.post('/login', loginUserFormValidation, async (req, res) => {
                     _id: user._id,
                     email: user.email,
                 });
-                console.log(jwts);
+                user.password = undefined;
 
                 return res.json({
                     status: 'success',
                     message: 'login success',
                     jwts,
+                    user,
                 });
             }
         }
