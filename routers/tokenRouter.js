@@ -37,7 +37,6 @@ Router.get('/', async (req, res) => {
                 });
             }
         }
-
         res.status(401).json({
             status: 'error',
             message: 'Unauthenticated',

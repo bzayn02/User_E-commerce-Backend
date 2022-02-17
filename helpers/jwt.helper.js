@@ -44,3 +44,6 @@ export const getJWTs = async ({ _id, email }) => {
 export const verifyRefreshJWT = (refreshJWT) => {
     return jwt.verify(refreshJWT, process.env.JWT_REFRESH_SECRET);
 };
+export const verifyAccessJWT = (accessJWT) => {
+    return jwt.verify(accessJWT, process.env.JWT_ACCESS_SECRET);
+};
