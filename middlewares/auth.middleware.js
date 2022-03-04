@@ -1,19 +1,24 @@
 import { verifyAccessJWT } from '../helpers/jwt.helper.js';
+import { getSession } from '../models/session/Session.model.js';
 
-export const isUser = (req, res, next) => {
+export const isUser = async (req, res, next) => {
     try {
         const { authorization } = req.headers;
         if (authorization) {
             // validate the access JWT
-            const decoded = verifyAccessJWT(authorization);
-            console.log(decoded);
-            return res.status(403).json({
-                message: 'Unauthorized',
-                status: 'error',
-            });
-        }
+            const { email } = verifyAccessJWT(authorization);
+            const session = email
+                ? await getSession({ token: authorization })
+                : null;
 
-        // next();
+            if (session?._id) {
+                req.userId = session.userId;
+
+                next();
+                return;
+                //else
+            }
+        }
 
         return res.status(403).json({
             message: 'Unauthorized',

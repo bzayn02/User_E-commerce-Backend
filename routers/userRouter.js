@@ -6,18 +6,21 @@ import {
     createUser,
     verifyEmail,
     getUserByEmail,
+    removeRefreshJWT,
 } from '../models/user-model/User.model.js';
+import {
+    createUniqueEmailConfirmation,
+    findUserEmailVerification,
+    deleteInfo,
+} from '../models/reset-pin/Pin.model.js';
+import { removeSession } from '../models/session/Session.model.js';
 import {
     createUserValidation,
     userEmailVerificationValidation,
     loginUserFormValidation,
 } from '../middlewares/formValidation.middleware.js';
 import { hashPassword, comparePassword } from '../helpers/bcrypt.helper.js';
-import {
-    createUniqueEmailConfirmation,
-    findUserEmailVerification,
-    deleteInfo,
-} from '../models/reset-pin/Pin.model.js';
+
 import {
     sendEmailVerificationConfirmation,
     sendEmailVerificationLink,
@@ -156,6 +159,24 @@ Router.post('/login', loginUserFormValidation, async (req, res) => {
         res.status(500).json({
             status: 'error',
             message: 'Error, unable to login now. Please try again later.',
+        });
+    }
+});
+// user logout
+Router.post('/logout', async (req, res) => {
+    try {
+        const { accessJWT, refreshJWT } = req.body;
+        accessJWT && (await removeSession(accessJWT));
+        refreshJWT && (await removeRefreshJWT(refreshJWT));
+        res.json({
+            status: 'success',
+            message: 'Logging out.',
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Error, unable to logout now. Please try again later.',
         });
     }
 });

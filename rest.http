@@ -24,16 +24,26 @@ PATCH http://localhost:8000/api/v1/user/email-verification
 Content-Type: application/json
 
 {
-    "pin":"495308",
-    "email":"b@ab.com"
+    "pin":"474367",
+    "email":"b@b.com"
 }
 ### Login User
-POST http://localhost:8000/api/v1/login
+POST http://localhost:8000/api/v1/user/login
 Content-Type: application/json
 
 {
-    "email":"ap@gmail.com",
-    "password":"asdfjkl;"
+    "email":"b@b.com",
+    "password":"12345678"
+}
+
+
+### Logout User
+POST http://localhost:8000/api/v1/user/logout
+Content-Type: application/json
+
+{
+   "accessJWT": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJAYi5jb20iLCJpYXQiOjE2NDYzNjkwMDMsImV4cCI6MTY0NjM2OTkwM30.Y8yEjRUIvJoZj35QI4hMHWCvJAIqVAnTbVQ9AnxKzbw",
+    "refreshJWT": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJAYi5jb20iLCJpYXQiOjE2NDYzNjkwMDMsImV4cCI6MTY0ODk2MTAwM30.96nxwmnxJJej4PlrM_ytgWRhnFplft2GuQYQsFKGotU"
 }
 
 

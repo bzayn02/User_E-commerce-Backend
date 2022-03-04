@@ -23,9 +23,12 @@ app.use(express.json());
 //load routers
 import userRouter from './routers/userRouter.js';
 import tokenRouter from './routers/tokenRouter.js';
+
+// isUser authentication
 import { isUser } from './middlewares/auth.middleware.js';
+
 //use routers
-app.use('/api/v1/user', isUser, userRouter);
+app.use('/api/v1/user', userRouter);
 app.use('/api/v1/token', tokenRouter);
 
 app.use('/', (req, res) => {
