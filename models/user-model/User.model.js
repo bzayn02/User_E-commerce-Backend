@@ -8,6 +8,16 @@ export const createUser = (newUser) => {
         throw new Error(error);
     }
 };
+export const updateUserProfile = (_id, updatingInfo) => {
+    try {
+        const result = UserSchema.findByIdAndUpdate(_id, updatingInfo, {
+            new: true,
+        });
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
 
 export const verifyEmail = (email) => {
     try {
@@ -28,6 +38,9 @@ export const setRefreshJWT = (_id, token) => {
 
 export const getUserByEmail = (email) => {
     return UserSchema.findOne({ email });
+};
+export const getUserById = (id) => {
+    return UserSchema.findById(id);
 };
 
 export const getUserByEmailAndRefreshToken = (filter) => {

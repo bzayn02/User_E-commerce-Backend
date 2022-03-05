@@ -1,28 +1,42 @@
 import { verifyAccessJWT } from '../helpers/jwt.helper.js';
 import { getSession } from '../models/session/Session.model.js';
+import { getUserById } from '../models/user-model/User.model.js';
 
 export const isUser = async (req, res, next) => {
     try {
         const { authorization } = req.headers;
         if (authorization) {
             // validate the access JWT
-            const { email } = verifyAccessJWT(authorization);
-            const session = email
+            const decoded = verifyAccessJWT(authorization);
+            // for the user unauthorised access to send jwt expired message
+            if (decoded === 'jwt expired') {
+                return res.status(403).json({
+                    status: 'error',
+                    message: 'jwt expired',
+                });
+            }
+            const session = decoded?.email
                 ? await getSession({ token: authorization })
                 : null;
 
             if (session?._id) {
                 req.userId = session.userId;
 
-                next();
-                return;
-                //else
+                // get the user from the db and check for the role
+                const user = await getUserById(session.userId);
+                if (user.role === 'user') {
+                    req.user = user;
+                    req.user.password = undefined;
+                    req.user.refreshJWT = undefined;
+                    next();
+                    return;
+                }
             }
         }
 
-        return res.status(403).json({
+        return res.status(401).json({
             message: 'Unauthorized',
-            status: 'error',
+            status: 401,
         });
     } catch (error) {
         console.log(error);

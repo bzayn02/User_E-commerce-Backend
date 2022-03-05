@@ -51,6 +51,6 @@ Content-Type: application/json
 
 ### get new access token
 
-GET http://localhost:8000/api/v1/user/token
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFwQGdtYWlsLmNvbSIsImlhdCI6MTY0NDk3NzY0NCwiZXhwIjoxNjQ3NTY5NjQ0fQ.STolgmiOIOTWBhGmjaaO_RUAhR7ixZVE1Mcm3V5nnZY
+GET http://localhost:8000/api/v1/token
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJAYi5jb20iLCJpYXQiOjE2NDYzNzE0NDQsImV4cCI6MTY0ODk2MzQ0NH0.3pHXZ2-D16ZQnpYdRNwk7MXFWKEQbukHxIFkFY1zofk
 

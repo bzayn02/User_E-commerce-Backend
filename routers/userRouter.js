@@ -7,6 +7,7 @@ import {
     verifyEmail,
     getUserByEmail,
     removeRefreshJWT,
+    updateUserProfile,
 } from '../models/user-model/User.model.js';
 import {
     createUniqueEmailConfirmation,
@@ -25,6 +26,7 @@ import {
     sendEmailVerificationConfirmation,
     sendEmailVerificationLink,
 } from '../helpers/email.helper.js';
+import { isUser } from '../middlewares/auth.middleware.js';
 
 import { getJWTs } from '../helpers/jwt.helper.js';
 
@@ -33,6 +35,16 @@ Router.all('/', (req, res, next) => {
     next();
 });
 
+// return user
+Router.get('/', isUser, (req, res) => {
+    res.json({
+        status: 'success',
+        message: 'User profile',
+        user: req.user,
+    });
+});
+
+// create new user
 Router.post('/', createUserValidation, async (req, res) => {
     try {
         // TODO
@@ -77,6 +89,31 @@ Router.post('/', createUserValidation, async (req, res) => {
             status: 'error',
             message: msg,
         });
+    }
+});
+
+//update user profile
+Router.patch('/', isUser, async (req, res) => {
+    try {
+        const { _id } = req.user;
+        console.log(_id, req.body);
+
+        if (_id) {
+            const result = await updateUserProfile(_id, req.body);
+
+            if (result?._id) {
+                return res.json({
+                    status: 'success',
+                    message: 'User profile has been updated successfully.',
+                });
+            }
+        }
+        return res.json({
+            status: 'error',
+            message: 'Unable to update the profile. Please try again later.',
+        });
+    } catch (error) {
+        console.log(error);
     }
 });
 
@@ -130,7 +167,7 @@ Router.post('/login', loginUserFormValidation, async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await getUserByEmail(email);
-        if (user?._id) {
+        if (user?._id && user?.role === 'user') {
             // check if password is valid or not
 
             const isPassMatched = comparePassword(password, user.password);
@@ -162,6 +199,7 @@ Router.post('/login', loginUserFormValidation, async (req, res) => {
         });
     }
 });
+
 // user logout
 Router.post('/logout', async (req, res) => {
     try {

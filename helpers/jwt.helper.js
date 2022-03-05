@@ -48,6 +48,6 @@ export const verifyAccessJWT = (accessJWT) => {
     try {
         return jwt.verify(accessJWT, process.env.JWT_ACCESS_SECRET);
     } catch (error) {
-        return false;
+        return error.message;
     }
 };
