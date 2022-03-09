@@ -23,6 +23,27 @@ export const createUniqueEmailConfirmation = async (email) => {
         throw new Error(error);
     }
 };
+export const createUniqueOTP = async ({ email, type }) => {
+    try {
+        // Generate random 6 digit number
+        const pinLength = 6;
+        const pin = randomNumberGenerator(pinLength);
+        if (!pin || !email) {
+            return false;
+        }
+        const newOTP = {
+            pin,
+            email,
+            type,
+        };
+
+        const result = await PinSchema(newOTP).save();
+
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
 
 export const findUserEmailVerification = async (filterObj) => {
     try {

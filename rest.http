@@ -35,6 +35,13 @@ Content-Type: application/json
     "email":"a@b.com",
     "password":"12345678"
 }
+### User forgot password otp request
+POST http://localhost:8000/api/v1/token/request-otp
+Content-Type: application/json
+
+{
+   "email":"a@b.com" 
+}
 
 
 ### Logout User
@@ -53,6 +60,15 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFAYi5jb20iLCJp
 {
    "currentPassword":"12345678",
    "password":"12345678io"
+}
+
+### Reset new password
+POST  http://localhost:8000/api/v1/user/reset-password
+Content-Type: application/json
+
+{
+    "otp":232323,
+   "newpassword":"12345678io"
 }
 
 // 2!Aa1111
