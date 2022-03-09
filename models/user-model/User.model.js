@@ -18,7 +18,6 @@ export const updateUserProfile = (_id, updatingInfo) => {
         throw new Error(error);
     }
 };
-
 export const verifyEmail = (email) => {
     try {
         const result = UserSchema.findOneAndUpdate(

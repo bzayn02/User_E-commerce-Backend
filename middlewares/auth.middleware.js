@@ -26,8 +26,7 @@ export const isUser = async (req, res, next) => {
                 const user = await getUserById(session.userId);
                 if (user.role === 'user') {
                     req.user = user;
-                    req.user.password = undefined;
-                    req.user.refreshJWT = undefined;
+
                     next();
                     return;
                 }

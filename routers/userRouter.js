@@ -19,24 +19,27 @@ import {
     createUserValidation,
     userEmailVerificationValidation,
     loginUserFormValidation,
+    passwordUpdateFormValidation,
 } from '../middlewares/formValidation.middleware.js';
 import { hashPassword, comparePassword } from '../helpers/bcrypt.helper.js';
 
 import {
     sendEmailVerificationConfirmation,
     sendEmailVerificationLink,
+    sendUpdatePasswordNotification,
 } from '../helpers/email.helper.js';
 import { isUser } from '../middlewares/auth.middleware.js';
 
 import { getJWTs } from '../helpers/jwt.helper.js';
 
 Router.all('/', (req, res, next) => {
-    console.log(req.body);
     next();
 });
 
 // return user
 Router.get('/', isUser, (req, res) => {
+    req.user.password = undefined;
+    req.user.refreshJWT = undefined;
     res.json({
         status: 'success',
         message: 'User profile',
@@ -96,7 +99,6 @@ Router.post('/', createUserValidation, async (req, res) => {
 Router.patch('/', isUser, async (req, res) => {
     try {
         const { _id } = req.user;
-        console.log(_id, req.body);
 
         if (_id) {
             const result = await updateUserProfile(_id, req.body);
@@ -128,7 +130,6 @@ Router.patch(
                 //To Do
                 //Information is valid. Now we can update the user
                 const data = await verifyEmail(result.email);
-                console.log(data, 'from verify email');
 
                 if (data?._id) {
                     //Delete the reset-pin info
@@ -218,5 +219,54 @@ Router.post('/logout', async (req, res) => {
         });
     }
 });
+
+// password update
+Router.post(
+    '/password-update',
+    isUser,
+    passwordUpdateFormValidation,
+    async (req, res) => {
+        try {
+            const { _id, password, fname, email } = req.user;
+            const { currentPassword } = req.body;
+
+            // current password matches to the database??
+
+            const passwordMatched = comparePassword(currentPassword, password);
+            if (passwordMatched) {
+                // encrypt the new password in db
+                const hashedPass = hashPassword(req.body.password);
+                if (hashedPass) {
+                    //update user table
+                    const user = await updateUserProfile(_id, {
+                        password: hashedPass,
+                    });
+                    if (user._id) {
+                        res.json({
+                            status: 'success',
+                            message: 'Password has been updated.',
+                        });
+                        // send the notification email saying password has been updated
+
+                        sendUpdatePasswordNotification({ fname, email });
+                        return;
+                    }
+                }
+            }
+
+            res.json({
+                status: 'error',
+                message:
+                    'Unable to update your password at the moment, please try again later.',
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.json({
+                status: 'error',
+                message: 'Error, unable to process your request.',
+            });
+        }
+    }
+);
 
 export default Router;

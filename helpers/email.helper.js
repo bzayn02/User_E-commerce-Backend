@@ -79,3 +79,24 @@ export const sendEmailVerificationConfirmation = (emailObj) => {
 
     emailProcessor(obj);
 };
+// send the email notification for password update
+export const sendUpdatePasswordNotification = (emailObj) => {
+    const { fname } = emailObj;
+
+    const obj = {
+        ...emailObj,
+        subject: 'Password Update Successful!',
+        text: `Hi ${fname}, Your password has been updated! If you did not make this change please contact us immediately.
+                `,
+        html: `
+            Hello ${fname},
+            <br/>
+            Your password has been updated!  If you did not make this change please contact us immediately.<br/><br/>
+            <br/><br/>
+            Thank you <br/><br/>
+            <Kind Regards,
+            --Some Company Information--`,
+    };
+
+    emailProcessor(obj);
+};
